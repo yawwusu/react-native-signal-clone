@@ -8,7 +8,11 @@ import { auth } from "../firebase";
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const signIn = () => console.log("email", email, "password", password);
+  const signIn = () => {
+    auth
+      .signInWithEmailAndPassword(email, password)
+      .catch((error) => alert(error));
+  };
 
   React.useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((authUser) => {
@@ -45,6 +49,7 @@ const LoginScreen = ({ navigation }) => {
           type="password"
           value={password}
           onChangeText={(text) => setPassword(text)}
+          onSubmitEditing={signIn}
         />
       </View>
       <Button containerStyle={styles.button} onPress={signIn} title="Login" />
